@@ -13,7 +13,6 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-
 </head>
 <style>
  body {
@@ -33,19 +32,22 @@
 </nav>
 
 <!-- Page Content -->
+
+
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
             <h1 class="my-4">Категории</h1>
             <div class="list-group">
-                {% for category in categories %}
-                <a href="{{ category.url }}" class="list-group-item">{{ category.name}} ({{category.count}})</a>
+                {% for c in cats %}
+                <a href="{{ c.get_absolute_url }}" class="list-group-item">{{c.name}}</a>
                 {% endfor %}
             </div>
         </div>
 
         <!-- /.col-lg-3 -->
         <div class="col-lg-9">
+
             {% block content %}
 
             {% endblock content %}
@@ -57,8 +59,7 @@
 <!-- Footer -->
 <footer class="py-2 bg-dark fixed-bottom">
     <div class="container">
-        <p class="m-0 text-center text-white">Курсовой проект для Itransition</p>
-        <p class="m-0 text-center text-white">Kovalenko AM &copy; Website 2021</p>
+        <p class="m-0 text-center text-white">Course project for Itransition. Kovalenko AM &copy; Website 2021</p>
     </div>
     <!-- /.container -->
 </footer>
