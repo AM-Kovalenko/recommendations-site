@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+
 # вторичная модель
 class Review(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название')
@@ -16,12 +17,11 @@ class Review(models.Model):
     def __str__(self):
         return self.title
 
-    # def get_absolute_url(self):
-    #     return reverse('post', kwargs={'post_slug': self.slug})
-
     def get_absolute_url(self):
-        return reverse('post', kwargs={'post_id': self.pk})
+        return reverse('post', kwargs={'post_slug': self.slug})
 
+    # def get_absolute_url(self):
+    #     return reverse('post', kwargs={'post_id': self.pk})
 
     # вложенный класс для более тонкой настройки модели в админке
     class Meta:
@@ -29,18 +29,17 @@ class Review(models.Model):
         verbose_name_plural = 'Обзоры'
         ordering = ['id']
 
+
 # первичная модель
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name='Категория')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
-
     def __str__(self):
         return self.name
 
-
     def get_absolute_url(self):
-        return reverse('category', kwargs={'cat_id': self.pk})
+        return reverse('category', kwargs={'cat_slug': self.slug})
 
     # def get_absolute_url(self):
     #     return reverse('category', kwargs={'cat_slug': self.slug})

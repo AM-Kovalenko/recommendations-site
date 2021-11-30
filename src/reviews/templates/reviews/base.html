@@ -1,3 +1,5 @@
+{% load reviews_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,12 +10,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Управление рекомендациями</title>
+    <title>{{title}}</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
+<title>{{title}}</title>
 <style>
  body {
   padding-top: 56px;
@@ -27,30 +30,42 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Главная<span class="sr-only">(current)</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'add_page' %}">Добавить статью</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Войти</a></li>
     </ul>
 </nav>
 
-<!-- Page Content -->
 
 
+<!-- Sidebar left -->
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
             <h1 class="my-4">Категории</h1>
+            {% getcats as categories %}
             <div class="list-group">
-                {% for c in cats %}
-                <a href="{{ c.get_absolute_url }}" class="list-group-item">{{c.name}}</a>
+                {% if cat_selected == 0 %}
+                    <a class="active">Все категории</a>
+                {% else %}
+                    <a href="{% url 'home' %}" class="list-group-item">Все категории</a>
+                {% endif %}
+                {% for c in categories %}
+                        {% if c.pk == cat_selected %}
+                            <a href="{{ c.get_absolute_url }}" class="list-group">{{c.name}}</a>
+                         {% else %}
+                            <a href="{{ c.get_absolute_url }}">{{c.name}}</a>
+                        {% endif %}
                 {% endfor %}
             </div>
         </div>
 
-        <!-- /.col-lg-3 -->
+        <!-- Page Content -->
         <div class="col-lg-9">
 
             {% block content %}
 
             {% endblock content %}
+
         </div>
     </div>
 </div>

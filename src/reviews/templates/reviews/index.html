@@ -5,32 +5,29 @@
 <div class="container-fluid">
 
 <ul class="list-group">
-	{% for p in posts %}
+		{% for p in posts %}
 		<div class="card h-100">
 			<div class="card-body">
          		<p class="card-title">Категория: {{p.cat}}</p>
 
-				<div class="row">
+<!--				<div class="row">-->
+					<h2><p class="card-title">{{p.title}}</p></h2>
+
 					{% if p.photo %}
-						<p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+						<p><img class="w3-card-4" src="{{p.photo.url}}"></p>
 					{% endif %}
 
-					<h2><p class="card-title">{{p.title}}</p></h2>
 					{% autoescape on %}
 						<p class="card-content">{{p.content|linebreaks|truncatewords:50}}</p>
 					{% endautoescape %}
-				</div>
+<!--				</div>-->
 				<p class="link"><a href="{{ p.get_absolute_url }}">Читать обзор</a></p>
 				<p class="card-content">Рейтинг: {{p.raiting}}</p>
 			</div>
 		</div>
-<br>
-	{% endfor %}
+		<br>
+		{% endfor %}
 </ul><br>
 <!--</div>-->
 <!--	</div>-->
 {% endblock %}
-
-
-
-
