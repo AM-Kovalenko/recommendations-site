@@ -1,0 +1,20 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-warning mb-2">Войти</button>
+    <br></br>
+    <div class="row">
+        <div class="col-lg-3">
+            <button class="btn btn-danger mb-2"><a href="#">Login with Google</a></button>
+            <button class="btn btn-success mb-2"><a href="#">Login with GitHub</a></button>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}

@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 from .models import *
 from django.core.exceptions import ValidationError
 
@@ -21,10 +24,21 @@ class AddPostForm(forms.ModelForm):
         model = Review  # Связь с моделью(все поля беруться из нее автоматически)
         fields = ['title', 'slug', 'content', 'is_published', 'raiting', 'cat']  # отображаемые поля
 
-
         # Собственный валидатор:
         def clean_title(self):
             title = self.cleaned_data['title']
             if len(title) > 200:
                 raise ValidationError('Длина превышает 200 символов')
             return title
+
+
+class RegisterUserForm(UserCreationForm):
+    # Переопределяю методы для нормалього отображения
+    username = forms.CharField(label='Логин')
+    email = forms.CharField(label='Email')
+    password1 = forms.CharField(label='Пароль')
+    password2 = forms.CharField(label='Повтор пароля')
+
+    class Meta:
+        model = User
+        fields = ('username','email', 'password1', 'password2')
