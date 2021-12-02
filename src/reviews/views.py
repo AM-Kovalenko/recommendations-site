@@ -1,7 +1,7 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -55,6 +55,14 @@ class ShowPost(DetailView):
     template_name = 'reviews/post.html'
     slug_url_kwarg = 'post_slug'  # Без этого в URL post/<slug:slug>/
     context_object_name = 'post'
+
+    def delete(self):
+        try:
+            rev = Review.objects.get()
+            rev.delete()
+            return HttpResponseRedirect("/")
+        except Review.DoesNotExist:
+            return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
 # ----------------------------------------------------------------------------------------
@@ -160,3 +168,4 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+

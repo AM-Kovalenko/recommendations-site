@@ -22,7 +22,7 @@ class AddPostForm(forms.ModelForm):
 
     class Meta:
         model = Review  # Связь с моделью(все поля беруться из нее автоматически)
-        fields = ['title', 'slug', 'content', 'is_published', 'raiting', 'cat']  # отображаемые поля
+        fields = ['title', 'slug', 'content', 'is_published','photo','raiting', 'cat']  # отображаемые поля
 
         # Собственный валидатор:
         def clean_title(self):
@@ -41,4 +41,4 @@ class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username','email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')

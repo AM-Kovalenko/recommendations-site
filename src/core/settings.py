@@ -35,7 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'reviews.apps.ReviewsConfig'
+    'social_django',
+    'reviews.apps.ReviewsConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -65,6 +67,13 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
@@ -126,3 +135,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # добавил 12
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login'
+
+SOCIAL_AUTH_GITHUB_KEY = 'b69ee5001c2fafc93648'
+SOCIAL_AUTH_GITHUB_SECRET = '2a755814ad8a6eadc94b16d13e86f0267d021af2'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1038857619064-rkhca1q18gm5jesou7dqq77301d8onms.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
