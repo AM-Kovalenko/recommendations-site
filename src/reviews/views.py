@@ -28,7 +28,7 @@ class ReviewHome(ListView):
     # педача динамических данных (списка menu) шаблону index.html
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(
-            **kwargs)  # Здесь super() – это обращение к базовому классу и, далее, через точку, идет вызов аналогичного метода с передачей ему возможных именованных параметров из словаря kwargs. Сформированный базовый контекст мы сохраняем через переменную context.
+            **kwargs)                                   # Здесь super() – это обращение к базовому классу и, далее, через точку, идет вызов аналогичного метода с передачей ему возможных именованных параметров из словаря kwargs. Сформированный базовый контекст мы сохраняем через переменную context.
         context['title'] = 'Главная страница'
 
         # c_def = self.get_user_context(title='Главная страница')
@@ -37,7 +37,7 @@ class ReviewHome(ListView):
 
     # функция отображает только опубликованные статьи
     def get_queryset(self):
-        return Review.objects.filter(is_published=True)
+        return Review.objects.filter(is_published=True).order_by('-time_create')
 
 
 # ------------------------------------------------------------------------------
@@ -55,14 +55,6 @@ class ShowPost(DetailView):
     template_name = 'reviews/post.html'
     slug_url_kwarg = 'post_slug'  # Без этого в URL post/<slug:slug>/
     context_object_name = 'post'
-
-    def delete(self):
-        try:
-            rev = Review.objects.get()
-            rev.delete()
-            return HttpResponseRedirect("/")
-        except Review.DoesNotExist:
-            return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
 # ----------------------------------------------------------------------------------------
@@ -127,6 +119,16 @@ class AddPage(CreateView):
         context['title'] = 'Добавление статьи'
         return context
 
+def edit_page(request):
+    cats = Category.objects.all()
+    post_list = Review.objects.all().order_by('id')
+    context = {
+            'cats': cats,
+            'title': 'Админ панель',
+            'post_list': post_list
+        }
+    return render(request, 'reviews/editpage.html', context=context)
+
 
 # ------------------------------------------------------------------------------
 def pageNotFound(request, exception):
@@ -169,3 +171,6 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
+def test(request):
+
+    return render(request, 'reviews/test.html')

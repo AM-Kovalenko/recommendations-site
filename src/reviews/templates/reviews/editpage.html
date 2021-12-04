@@ -1,0 +1,60 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+
+<h1 class="mt-4">{{title}}</h1>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="exampleModal">
+   Добавить статью
+</button>
+
+
+<table class="table table-bordered mt-4">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Дата создания</th>
+      <th scope="col">Название</th>
+      <th scope="col">Категория</th>
+      <th scope="col">Редактирование</th>
+      <th scope="col">Удаление</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for p in post_list %}
+    <tr>
+      <th>{{p.id}}</th>
+      <td>{{p.time_create}}</td>
+      <td>{{p.title}}</td>
+      <td>{{p.cat}}</td>
+      <td><a href="#">Редактирование</a></td>
+      <td><a href="#">Удаление</a></td>
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="add_form" method="get" action="?sds=sdsg">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button form="add_form" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
