@@ -9,8 +9,8 @@
 
 {{post.content|linebreaks}}
 <p class="card-content">Рейтинг: {{post.raiting}}</p>
-<button class="btn btn-warning" action="post.delete" method="post" type="delete">ЮЮ</button>
+
 {% if request.user.is_authenticated %}
-    <button class="btn btn-warning" action="post.delete" method="post" type="delete">Удалить</button>
+    <button class="btn btn-warning" action="post.delete" method="post" type="delete">like</button>
 {% endif %}
 {% endblock %}

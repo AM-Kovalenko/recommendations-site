@@ -1,0 +1,15 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+<h1 class="mt-4">{{title}}</h1>
+
+<form action="{% url 'deletepost'  post.slug %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1 class="mt-4"> Вы желаете удалить объект "{{post.title}}" ?</h1>
+<!--    {{ form.as_p}}-->
+<!--    <p><input type="submit" value="yes"/></p>-->
+    <button class="btn btn-warning" type="submit" value="yes">Удалить</button>
+    <button class="btn btn-warning"><a href="/adminpage/"> Нет </a></button>
+</form>
+
+{% endblock %}

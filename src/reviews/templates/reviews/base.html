@@ -32,7 +32,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav ml-auto-left">
-        <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Главная<span class="sr-only">(current)</span></a></li>
+        <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
     </ul>
     <ul class="navbar-nav ml-auto">
         {% if request.user.is_authenticated %}
@@ -50,9 +50,9 @@
 
 
 <!-- Sidebar left -->
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <h1 class="my-4">Категории</h1>
             {% getcats as categories %}
             <div class="list-group">

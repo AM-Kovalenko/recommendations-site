@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import *
 from .models import *
 
@@ -28,7 +28,7 @@ class ReviewHome(ListView):
     # педача динамических данных (списка menu) шаблону index.html
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(
-            **kwargs)                                   # Здесь super() – это обращение к базовому классу и, далее, через точку, идет вызов аналогичного метода с передачей ему возможных именованных параметров из словаря kwargs. Сформированный базовый контекст мы сохраняем через переменную context.
+            **kwargs)  # Здесь super() – это обращение к базовому классу и, далее, через точку, идет вызов аналогичного метода с передачей ему возможных именованных параметров из словаря kwargs. Сформированный базовый контекст мы сохраняем через переменную context.
         context['title'] = 'Главная страница'
 
         # c_def = self.get_user_context(title='Главная страница')
@@ -115,28 +115,42 @@ class AddPage(CreateView):
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        # import pdb;pdb.set_trace()
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление статьи'
         return context
 
-def edit_page(request):
+
+def adminpage(request):
     cats = Category.objects.all()
     post_list = Review.objects.all().order_by('id')
     context = {
-            'cats': cats,
-            'title': 'Админ панель',
-            'post_list': post_list
-        }
-    return render(request, 'reviews/editpage.html', context=context)
+        'cats': cats,
+        'title': 'Админ панель',
+        'post_list': post_list
+    }
+    return render(request, 'reviews/adminpage.html', context=context)
+
+
+class UpdatePost(UpdateView):
+    model = Review
+    form_class = AddPostForm
+    template_name = 'reviews/updatepost.html'
+    slug_url_kwarg = 'post_slug'
+    context_object_name = 'post'
+
+
+class DeletePost(DeleteView):
+    model = Review
+    template_name = 'reviews/deletepage.html'
+    slug_url_kwarg = 'post_slug'
+    context_object_name = 'post'
+    success_url = "/adminpage/"
 
 
 # ------------------------------------------------------------------------------
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
-
-
-# def login(request):
-#     return HttpResponse('<h1>Страница login</h1>')
 
 
 class RegisterUser(CreateView):
@@ -150,9 +164,10 @@ class RegisterUser(CreateView):
         return context
 
     def form_valid(self, form):
-        user=form.save()
+        user = form.save()
         login(self.request, user)
         return redirect('home')
+
 
 class LoginUser(LoginView):
     form_class = AuthenticationForm
@@ -170,7 +185,3 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
-
-def test(request):
-
-    return render(request, 'reviews/test.html')

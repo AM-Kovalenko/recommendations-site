@@ -17,9 +17,10 @@ from django.core.exceptions import ValidationError
 # Пример формы, связанной с моделью
 class AddPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs) # преобразование
         self.fields['cat'].empty_label = "Категория не выбрана"
-
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
     class Meta:
         model = Review  # Связь с моделью(все поля беруться из нее автоматически)
         fields = '__all__'   #['title', 'slug', 'content', 'is_published','photo','raiting', 'cat']  # отображаемые поля

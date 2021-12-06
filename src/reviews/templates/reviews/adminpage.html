@@ -1,0 +1,41 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+
+<h1 class="mt-4">{{title}}</h1>
+
+<!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
+<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="exampleModal">-->
+<!--   Добавить статью-->
+<!--</button>-->
+
+<button type="button" class="btn btn-light"><a href="{% url 'add_page' %}">Добавить статью</a></button>
+
+<table class="table table-bordered mt-4">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Дата создания</th>
+      <th scope="col">Название</th>
+      <th scope="col">Категория</th>
+      <th scope="col">Редактирование</th>
+      <th scope="col">Удаление</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for p in post_list %}
+    <tr>
+      <th>{{p.id}}</th>
+      <td>{{p.time_create}}</td>
+      <td>{{p.title}}</td>
+      <td>{{p.cat}}</td>
+      <td><a href="{% url 'updatepost' p.slug %}">Редактирование</a></td>
+      <td><a href="{% url 'deletepost' p.slug %}">Удаление</a></td>
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>
+
+
+{% endblock %}
