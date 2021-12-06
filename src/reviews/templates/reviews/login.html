@@ -3,6 +3,7 @@
 {% block content %}
 <h1 class="mt-4">{{title}}</h1>
 
+<div class="col-4">
 <form class="mt-4" method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -15,5 +16,5 @@
         </div>
     </div>
 </form>
-
+</div>
 {% endblock %}

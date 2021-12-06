@@ -5,12 +5,7 @@
 
 <h1 class="mt-4">{{title}}</h1>
 
-<!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
-<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="exampleModal">-->
-<!--   Добавить статью-->
-<!--</button>-->
 
-<button type="button" class="btn btn-light"><a href="{% url 'add_page' %}">Добавить статью</a></button>
 
 <table class="table table-bordered mt-4">
   <thead>
@@ -37,5 +32,6 @@
   </tbody>
 </table>
 
+<button type="button" class="btn btn-light"><a href="{% url 'add_page' %}">Добавить статью</a></button>
 
 {% endblock %}

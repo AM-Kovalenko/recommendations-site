@@ -21,8 +21,13 @@
 </head>
 <title>{{title}}</title>
 <style>
- body {
-  padding-top: 56px;
+    body {
+        padding-top: 56px;
+        padding-bottom: 56px;
+
+
+
+
 }
 
 </style>
@@ -32,17 +37,23 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav ml-auto-left">
-        <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
+        {% url 'home' as url_home %}
+        <li class="nav-item"><a class="nav-link {% if url_home == request.path %} active {% endif %}" href="{% url 'home' %}">Главная</a></li>
     </ul>
     <ul class="navbar-nav ml-auto">
         {% if request.user.is_authenticated %}
-            <li class="navbar-nav"><a class="nav-link" href="{% url 'add_page' %}">Добавить статью</a></li>
-            <li class="navbar-nav"><a class="nav-link" href="{% url 'edit_page' %}">Админ панель</a></li>
-            <li class="nav-item"><a class="nav-link">пользователь: {{user.username}}</a></li>
+            {% url 'add_page' as url_add_page %}
+            <li class="navbar-nav"><a class="nav-link {% if url_add_page == request.path %} active {% endif %}" href="{% url 'add_page' %}">Добавить статью</a></li>
+            {% url 'admin_page' as url_admin_page %}
+            <li class="navbar-nav"><a class="nav-link {% if url_admin_page == request.path %} active {% endif %}" href="{% url 'admin_page' %}">Админ панель</a></li>
+
+            <li class="nav-item"><a class="nav-link active">пользователь: {{user.username}}</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Выйти</a></li>
         {% else %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Регистрация</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Войти</a></li>
+            {% url 'register' as url_register %}
+            <li class="nav-item"><a class="nav-link {% if url_register == request.path %} active {% endif %}" href="{% url 'register' %}">Регистрация</a></li>
+            {% url 'login' as url_login %}
+            <li class="nav-item"><a class="nav-link {% if url_login == request.path %} active {% endif %}" href="{% url 'login' %}">Войти</a></li>
         {% endif %}
     </ul>
 </nav>

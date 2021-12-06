@@ -1,18 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 from .models import *
 from django.core.exceptions import ValidationError
-
-
-# Пример формы, не связанной с моделью
-# class AddPostForm(forms.Form):
-#     title = forms.CharField(max_length=255, label='Заголовок')
-#     slug = forms.SlugField(max_length=255, label="URL")
-#     content = forms.CharField(widget=forms.Textarea(attrs={'cols':60,'rows':10}), label="Контент")
-#     is_published = forms.BooleanField(label="Публикация", required=False, initial=True)
-#     cat = forms.ModelChoiceField(queryset=Category.objects.all(), label="Категории")
 
 # Пример формы, связанной с моделью
 class AddPostForm(forms.ModelForm):
@@ -34,6 +25,11 @@ class AddPostForm(forms.ModelForm):
 
 
 class RegisterUserForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs) # преобразование
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
     # Переопределяю методы для нормалього отображения
     username = forms.CharField(label='Логин')
     email = forms.CharField(label='Email')
@@ -43,3 +39,14 @@ class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class LoginUserForm(AuthenticationForm, forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)  # преобразование
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

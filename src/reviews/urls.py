@@ -14,7 +14,8 @@ urlpatterns = [
     url('', include('social_django.urls', namespace='social')),
     path('accounts/profile/', LoginUser.as_view(), name='login_github'),
     path('login/google-oauth2/', LoginUser.as_view(), name='login_google'),
-    path('adminpage/', adminpage, name='edit_page'),
+    # path('adminpage/', adminpage, name='edit_page'),
+    path('adminpage/', AdminPanel.as_view(), name='admin_page'),
     path('updatepost/<slug:post_slug>/', UpdatePost.as_view(), name='updatepost'),
     path('deletepost/<slug:post_slug>/', DeletePost.as_view(), name='deletepost'),
 ]

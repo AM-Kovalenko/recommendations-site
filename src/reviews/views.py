@@ -115,21 +115,32 @@ class AddPage(CreateView):
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        # import pdb;pdb.set_trace()
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление статьи'
         return context
 
 
-def adminpage(request):
-    cats = Category.objects.all()
-    post_list = Review.objects.all().order_by('id')
-    context = {
-        'cats': cats,
-        'title': 'Админ панель',
-        'post_list': post_list
-    }
-    return render(request, 'reviews/adminpage.html', context=context)
+# def adminpage(request):
+#     cats = Category.objects.all()
+#     post_list = Review.objects.all().order_by('id')
+#     context = {
+#         'cats': cats,
+#         'title': 'Админ панель',
+#         'post_list': post_list
+#     }
+#     return render(request, 'reviews/adminpage.html', context=context)
+
+class AdminPanel(CreateView):
+    model = Review
+    template_name = 'reviews/adminpage.html'
+    form_class = AddPostForm
+    success_url = reverse_lazy('admin_page')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление статьи'
+        context['post_list'] = Review.objects.all().order_by('id')
+        return context
 
 
 class UpdatePost(UpdateView):
@@ -170,7 +181,8 @@ class RegisterUser(CreateView):
 
 
 class LoginUser(LoginView):
-    form_class = AuthenticationForm
+
+    form_class = LoginUserForm
     template_name = 'reviews/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -180,6 +192,7 @@ class LoginUser(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('home')
+
 
 
 def logout_user(request):

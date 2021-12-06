@@ -2,17 +2,18 @@
  
 {% block content %}
 <h1 class="mt-4" >{{title}}</h1>
- 
-<form class="mt-4" method="post">
-    {% csrf_token %}
+
+<div class="col-6">
+    <form class="mt-4" method="post">
+        {% csrf_token %}
 <!--    {{ form.as_p }}-->
-    {% for f in form %}
-        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-        <div class="form-error">{{ f.errors }}</div>
+        {% for f in form %}
+            <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+            <div class="form-error">{{ f.errors }}</div>
     {% endfor %}
     <button class="btn btn-warning mb-2 mt-4">Регистрация</button>
-</form>
-
+    </form>
+</div>
 
 
 {% endblock %}
