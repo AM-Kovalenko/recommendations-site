@@ -14,7 +14,7 @@ class AddPostForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
     class Meta:
         model = Review  # Связь с моделью(все поля беруться из нее автоматически)
-        fields = '__all__'   #['title', 'slug', 'content', 'is_published','photo','raiting', 'cat']  # отображаемые поля
+        fields = ['title', 'slug', 'content', 'is_published','photo','raiting', 'cat']  # отображаемые поля
 
         # Собственный валидатор:
         def clean_title(self):

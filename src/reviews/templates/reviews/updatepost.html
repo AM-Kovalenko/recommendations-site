@@ -1,8 +1,7 @@
 {% extends 'reviews/base.html' %}
 
 {% block content %}
-<h1>{{post.title}}</h1>
-<h1 class="mt-4">{{title}}</h1>
+<h1 class="mt-4">{{title}} - {{post.title}}</h1>
 
 <form action="{% url 'updatepost' post.slug %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}

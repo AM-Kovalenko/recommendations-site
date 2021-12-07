@@ -1,7 +1,8 @@
 {% extends 'reviews/base.html' %}
 
 {% block content %}
-<h1>{{post.title}}</h1>
+<h1 class="mt-4">{{post.title}}</h1>
+<p1 class="mt-4">Автор: {{post.author}} ({{post.time_create}})</p1>
 
 {% if post.photo %}
 <p><img class="img-fluid" src="{{post.photo.url}}"></p>

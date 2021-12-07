@@ -22,7 +22,7 @@
       {% for p in post_list %}
     <tr>
       <th>{{p.id}}</th>
-      <td>{{p.time_create}}</td>
+      <td>{{p.time_create|date:'d.m.y'}} - {{p.author}}</td>
       <td>{{p.title}}</td>
       <td>{{p.cat}}</td>
       <td><a href="{% url 'updatepost' p.slug %}">Редактирование</a></td>

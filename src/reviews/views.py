@@ -1,5 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -109,16 +110,22 @@ class ReviewCategory(ListView):
 #     }
 #     return render(request, 'reviews/addpage.html', context=context)
 
-class AddPage(CreateView):
+class AddPage(LoginRequiredMixin, CreateView):
     form_class = AddPostForm  # указываем класс формы
     template_name = 'reviews/addpage.html'
     success_url = reverse_lazy('home')
+    prepopulated_fields = {"slug": ("title",)}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление статьи'
         return context
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)   # метод сохранения пока не вызван
+        self.object.author = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 # def adminpage(request):
 #     cats = Category.objects.all()
@@ -130,7 +137,7 @@ class AddPage(CreateView):
 #     }
 #     return render(request, 'reviews/adminpage.html', context=context)
 
-class AdminPanel(CreateView):
+class AdminPanel(LoginRequiredMixin, CreateView):
     model = Review
     template_name = 'reviews/adminpage.html'
     form_class = AddPostForm
@@ -143,7 +150,7 @@ class AdminPanel(CreateView):
         return context
 
 
-class UpdatePost(UpdateView):
+class UpdatePost(LoginRequiredMixin, UpdateView):
     model = Review
     form_class = AddPostForm
     template_name = 'reviews/updatepost.html'
@@ -151,13 +158,33 @@ class UpdatePost(UpdateView):
     context_object_name = 'post'
 
 
-class DeletePost(DeleteView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Редактирование статьи'
+        context['post_list'] = Review.objects.all().order_by('id')
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.user != kwargs['instance'].author:
+            return self.handle_no_permission()
+        return kwargs
+
+
+class DeletePost(LoginRequiredMixin, DeleteView):
     model = Review
     template_name = 'reviews/deletepage.html'
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post'
     success_url = "/adminpage/"
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.request.user != self.object.author:
+            return self.handle_no_permission()
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
 
 # ------------------------------------------------------------------------------
 def pageNotFound(request, exception):
@@ -181,9 +208,10 @@ class RegisterUser(CreateView):
 
 
 class LoginUser(LoginView):
-
+    # post_reset_login_backend = 'django.contrib.auth.backends.ModelBackend'
     form_class = LoginUserForm
     template_name = 'reviews/login.html'
+
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -198,3 +226,5 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+

@@ -1,9 +1,11 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
 
 # вторичная модель
 class Review(models.Model):
+    author = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name='Автор статьи', blank = True, null=True)
     title = models.CharField(max_length=255, verbose_name='Название')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name='Содержание')
