@@ -1,9 +1,11 @@
 {% extends 'reviews/base.html' %}
 
 {% block content %}
-<h1 class="mt-4">{{post.title}}</h1>
-<p1 class="mt-4">Автор: {{post.author}} ({{post.time_create}})</p1>
 
+<h1 class="mt-4">{{post.title}}</h1>
+<hr>
+<h5 class="mt-4">Автор: {{post.author}} ({{post.time_create}})</h5>
+<hr>
 {% if post.photo %}
 <p><img class="img-fluid" src="{{post.photo.url}}"></p>
 {% endif %}
@@ -11,7 +13,31 @@
 {{post.content|linebreaks}}
 <p class="card-content">Рейтинг: {{post.raiting}}</p>
 
-{% if request.user.is_authenticated %}
-    <button class="btn btn-warning" action="post.delete" method="post" type="delete">like</button>
-{% endif %}
+<p>Комментарии ({{ post.comments_review.all.count }})</p>
+<hr>
+<p>Добавить комментарий</p>
+<div class="col-8">
+{% for item in post.comments_review.all %}
+    <ul>
+        Дата:{{ item.time_create }}<br>
+        Автор:{{ item.author }}<br>
+        Статус статьи:{{ item.status }}<br><br>
+        {{ item.text }}<hr>
+
+    </ul>
+
+    {{ item.id }}<br>
+{% endfor %}
+
+
+
+<form action="{% url 'post'  post.slug %}"  method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Добавить</button>
+    </div>
+</form>
+</div>
+
 {% endblock %}

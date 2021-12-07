@@ -5,7 +5,7 @@ from django.urls import reverse
 
 # вторичная модель
 class Review(models.Model):
-    author = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name='Автор статьи', blank = True, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор статьи', blank=True, null=True)
     title = models.CharField(max_length=255, verbose_name='Название')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name='Содержание')
@@ -50,3 +50,12 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
         ordering = ['id']
+
+
+class Comments(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, verbose_name='Стетья', blank=True, null=True,
+                               related_name='comments_review')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор комментария', blank=True, null=True)
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    text = models.TextField(blank=True, verbose_name='Текст комментария')
+    status = models.BooleanField(verbose_name='Видимость статьи', default=False)
