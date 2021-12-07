@@ -25,8 +25,14 @@
       <td>{{p.time_create|date:'d.m.y'}} - {{p.author}}</td>
       <td>{{p.title}}</td>
       <td>{{p.cat}}</td>
-      <td><a href="{% url 'updatepost' p.slug %}">Редактирование</a></td>
-      <td><a href="{% url 'deletepost' p.slug %}">Удаление</a></td>
+
+      {% if request.user == p.author %}
+        <td><a href="{% url 'updatepost' p.slug %}">Редактирование</a></td>
+        <td><a href="{% url 'deletepost' p.slug %}">Удаление</a></td>
+      {% else %}
+        <td> нет доступа </td>
+        <td> нет доступа </td>
+      {% endif %}
       {% endfor %}
     </tr>
   </tbody>
